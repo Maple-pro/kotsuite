@@ -1,18 +1,29 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.maplepro.kotsuite</id>
-    <name>kotsuite</name>
+    <name>Kotsuite</name>
     <vendor>maple-pro</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+
+    <depends>org.jetbrains.android</depends>
+
+    <depends>com.intellij.modules.androidstudio</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="com.github.maplepro.kotsuite.services.MyApplicationService"/>
         <projectService serviceImplementation="com.github.maplepro.kotsuite.services.MyProjectService"/>
     </extensions>
 
-    <applicationListeners>
-        <listener class="com.github.maplepro.kotsuite.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
+<!--    <applicationListeners>-->
+<!--        <listener class="com.github.maplepro.kotsuite.listeners.MyProjectManagerListener"-->
+<!--                  topic="com.intellij.openapi.project.ProjectManagerListener"/>-->
+<!--    </applicationListeners>-->
+
+
+    <actions>
+        <action id="hello" class="com.github.maplepro.kotsuite.actions.HelloAction" text="Hello" description="IDEA plugin action tutorial">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+    </actions>
 </idea-plugin>
