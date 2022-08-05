@@ -24,6 +24,9 @@ repositories {
     maven {
         setUrl("https://maven.aliyun.com/repository/public/")
     }
+    maven {
+        setUrl("https://www.jetbrains.com/intellij-repository/releases")
+    }
     mavenCentral()
 }
 
@@ -121,4 +124,12 @@ tasks {
         // https://plugins.jetbrains.com/docs/intellij/deployment.html#specifying-a-release-channel
         channels.set(listOf(properties("pluginVersion").split('-').getOrElse(1) { "default" }.split('.').first()))
     }
+
+    withType<Test> {
+        environment("NO_FS_ROOTS_ACCESS_CHECK", true)
+    }
+
+//    runIde {
+//        jbrVersion.set("jbr-11_0_13b1504.49")
+//    }
 }

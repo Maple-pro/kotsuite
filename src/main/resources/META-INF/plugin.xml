@@ -6,9 +6,10 @@
 
     <depends>com.intellij.modules.platform</depends>
 
-    <depends>org.jetbrains.android</depends>
+<!--    <depends>org.jetbrains.android</depends>-->
 
     <depends>com.intellij.modules.androidstudio</depends>
+    <depends>org.jetbrains.kotlin</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="com.github.maplepro.kotsuite.services.MyApplicationService"/>
@@ -24,6 +25,9 @@
     <actions>
         <action id="hello" class="com.github.maplepro.kotsuite.actions.HelloAction" text="Hello" description="IDEA plugin action tutorial">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="ConvertKotlinFile" class="com.github.maplepro.kotsuite.actions.ConvertJavaToKotlinAction" text="Maples - Convert to Kotlin File">
+            <add-to-group group-id="CodeMenu" anchor="after" relative-to-action="ConvertJavaToKotlinGroup"/>
         </action>
     </actions>
 </idea-plugin>
