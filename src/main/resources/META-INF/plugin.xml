@@ -14,6 +14,11 @@
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="com.github.maplepro.kotsuite.services.MyApplicationService"/>
         <projectService serviceImplementation="com.github.maplepro.kotsuite.services.MyProjectService"/>
+
+        <toolWindow factoryClass="com.github.maplepro.kotsuite.toolwindows.KotSuiteToolWindowFactory" id="kotsuite"
+                    anchor="bottom" icon="KotIcons.showLogsIcon">
+
+        </toolWindow>
     </extensions>
 
 <!--    <applicationListeners>-->
@@ -29,5 +34,10 @@
         <action id="ConvertKotlinFile" class="com.github.maplepro.kotsuite.actions.ConvertJavaToKotlinAction" text="Maples - Convert to Kotlin File">
             <add-to-group group-id="CodeMenu" anchor="after" relative-to-action="ConvertJavaToKotlinGroup"/>
         </action>
+        <action id="KotSuite" class="com.github.maplepro.kotsuite.actions.KotAction" text="Run KotSuite">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </action>
     </actions>
+
 </idea-plugin>

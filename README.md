@@ -8,3 +8,7 @@
 
 KotSuite automatically generates JUnit tests for Kotlin classes in Android APK.
 It contains a JAR file (main function) and an IDEA plugin (user interface).
+
+<!-- Plugin description -->
+Generate JUnit test suite for Android project.
+<!-- Plugin description end -->
