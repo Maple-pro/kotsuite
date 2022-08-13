@@ -9,7 +9,7 @@ plugins {
     // Kotlin support
     id("org.jetbrains.kotlin.jvm") version "1.6.10"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.4.0"
+    id("org.jetbrains.intellij") version "1.8.0"
     // Gradle Changelog Plugin
     id("org.jetbrains.changelog") version "1.3.1"
     // Gradle Qodana Plugin
@@ -125,7 +125,7 @@ tasks {
         environment("NO_FS_ROOTS_ACCESS_CHECK", true)
     }
 
-//    runIde {
-//        jbrVersion.set("jbr-11_0_13b1504.49")
-//    }
+    runIde {
+        jbrVersion.set("jbr_dcevm-11_0_14_1b2043.45")
+    }
 }
