@@ -1,3 +1,6 @@
+import org.jetbrains.changelog.Changelog
+import org.jetbrains.changelog.ChangelogSectionUrlBuilder
+import org.jetbrains.changelog.date
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -7,11 +10,11 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.6.10"
+    id("org.jetbrains.kotlin.jvm") version "1.8.20"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.8.0"
+    id("org.jetbrains.intellij") version "1.13.3"
     // Gradle Changelog Plugin
-    id("org.jetbrains.changelog") version "1.3.1"
+    id("org.jetbrains.changelog") version "2.0.0"
     // Gradle Qodana Plugin
     id("org.jetbrains.qodana") version "0.1.13"
 }
@@ -44,7 +47,29 @@ intellij {
 // Configure Gradle Changelog Plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
 changelog {
     version.set(properties("pluginVersion"))
-    groups.set(emptyList())
+    path.set(file("CHANGELOG.md").canonicalPath)
+    header.set(provider { "[${version.get()}] - ${date()}" })
+    headerParserRegex.set("""(\d+\.\d+)""".toRegex())
+    introduction.set(
+        """
+        My awesome project that provides a lot of useful features, like:
+        
+        - Feature 1
+        - Feature 2
+        - and Feature 3
+        """.trimIndent()
+    )
+    itemPrefix.set("-")
+    keepUnreleasedSection.set(true)
+    unreleasedTerm.set("[Unreleased]")
+    groups.set(listOf("Added", "Changed", "Deprecated", "Removed", "Fixed", "Security"))
+    lineSeparator.set("\n")
+    combinePreReleases.set(true)
+    sectionUrlBuilder.set(
+        ChangelogSectionUrlBuilder { repositoryUrl, currentVersion, previousVersion, isUnreleased ->
+            "foo"
+        }
+    )
 }
 
 // Configure Gradle Qodana Plugin - read more: https://github.com/JetBrains/gradle-qodana-plugin
@@ -91,9 +116,13 @@ tasks {
 
         // Get the latest available change notes from the changelog file
         changeNotes.set(provider {
-            changelog.run {
-                getOrNull(properties("pluginVersion")) ?: getLatest()
-            }.toHTML()
+            changelog.renderItem(
+                changelog
+                    .getUnreleased()
+                    .withHeader(false)
+                    .withEmptySections(false),
+                Changelog.OutputType.HTML
+            )
         })
     }
 

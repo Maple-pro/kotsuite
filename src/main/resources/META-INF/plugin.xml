@@ -1,6 +1,6 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.maplepro.kotsuite</id>
+    <id>org.kotsuite.intellij</id>
     <name>Kotsuite</name>
     <vendor>maple-pro</vendor>
 
@@ -12,29 +12,27 @@
     <depends>org.jetbrains.kotlin</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.maplepro.kotsuite.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.maplepro.kotsuite.services.MyProjectService"/>
+        <applicationService serviceImplementation="org.kotsuite.intellij.services.MyApplicationService"/>
+        <projectService serviceImplementation="org.kotsuite.intellij.services.MyProjectService"/>
 
-        <toolWindow factoryClass="com.github.maplepro.kotsuite.toolwindows.KotSuiteToolWindowFactory" id="kotsuite"
+        <toolWindow factoryClass="org.kotsuite.intellij.toolwindows.KotSuiteToolWindowFactory" id="kotsuite"
                     anchor="bottom" icon="KotIcons.showLogsIcon">
-
         </toolWindow>
     </extensions>
 
 <!--    <applicationListeners>-->
-<!--        <listener class="com.github.maplepro.kotsuite.listeners.MyProjectManagerListener"-->
+<!--        <listener class="org.kotsuite.intellij.kotsuite.listeners.MyProjectManagerListener"-->
 <!--                  topic="com.intellij.openapi.project.ProjectManagerListener"/>-->
 <!--    </applicationListeners>-->
 
-
     <actions>
-        <action id="hello" class="com.github.maplepro.kotsuite.actions.HelloAction" text="Hello" description="IDEA plugin action tutorial">
+        <action id="hello" class="org.kotsuite.intellij.actions.HelloAction" text="Hello" description="IDEA plugin action tutorial">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
-        <action id="ConvertKotlinFile" class="com.github.maplepro.kotsuite.actions.ConvertJavaToKotlinAction" text="Maples - Convert to Kotlin File">
+        <action id="ConvertKotlinFile" class="org.kotsuite.intellij.actions.ConvertJavaToKotlinAction" text="Maples - Convert to Kotlin File">
             <add-to-group group-id="CodeMenu" anchor="after" relative-to-action="ConvertJavaToKotlinGroup"/>
         </action>
-        <action id="KotSuite" class="com.github.maplepro.kotsuite.actions.KotAction" text="Run KotSuite">
+        <action id="KotSuite" class="org.kotsuite.intellij.actions.KotAction" text="Run KotSuite">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
         </action>
