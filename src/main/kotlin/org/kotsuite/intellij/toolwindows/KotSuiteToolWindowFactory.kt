@@ -6,11 +6,14 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.content.ContentFactory
 import org.jetbrains.annotations.NotNull
 
-class KotSuiteToolWindowFactory: ToolWindowFactory {
+class KotSuiteToolWindowFactory : ToolWindowFactory {
 
     private var project: Project? = null
 
-    override fun createToolWindowContent(@NotNull project: Project, @NotNull toolWindow: ToolWindow) {
+    override fun createToolWindowContent(
+        @NotNull project: Project,
+        @NotNull toolWindow: ToolWindow
+    ) {
 
         this.project = project
 

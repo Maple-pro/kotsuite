@@ -5,7 +5,10 @@ import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 
-class StopKotAction(notifier: AsyncGUINotifier, text: String) : AnAction(text, "", null) {
+class StopKotAction(
+    notifier: AsyncGUINotifier,
+    text: String
+) : AnAction(text, "", null) {
 
     private var notifier: AsyncGUINotifier? = null
 

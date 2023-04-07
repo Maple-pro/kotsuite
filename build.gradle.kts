@@ -31,6 +31,13 @@ repositories {
         setUrl("https://www.jetbrains.com/intellij-repository/releases")
     }
     mavenCentral()
+    maven {
+        setUrl("file://C:/Users/17199/.m2/repository")
+    }
+}
+
+dependencies {
+//    implementation("org.kotsuite:kotsuite-core:1.0-SNAPSHOT")
 }
 
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin

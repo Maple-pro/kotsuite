@@ -11,7 +11,7 @@ import java.awt.BorderLayout
 import java.awt.Dimension
 import javax.swing.*
 
-class KotStartDialog(private val project: Project): DialogWrapper(true) {
+class KotStartDialog(private val project: Project) : DialogWrapper(true) {
 
     private val label2Text = mapOf(
         "EXPORT_FOLDER0" to "Export Folder: ",
@@ -50,7 +50,6 @@ class KotStartDialog(private val project: Project): DialogWrapper(true) {
         return null
     }
 
-
     private fun createParameterPanel(labelId: String, labelText: String): JComponent {
         val parameterPanel = JPanel(BorderLayout())
 
@@ -82,12 +81,13 @@ class KotStartDialog(private val project: Project): DialogWrapper(true) {
         toolWindow?.show()
         notifier?.clearConsole()
 
+        notifier?.printOnConsole("Start KotSuite ...\n")
+
         label2Field.forEach {
             notifier?.printOnConsole("${it.value.text}\n")
         }
 
-        notifier?.printOnConsole("Start KotSuite ...\n")
-    }
 
+    }
 
 }

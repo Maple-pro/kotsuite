@@ -6,7 +6,6 @@ import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
-//import com.intellij.openapi.project.guessProjectDir
 
 class ConvertJavaToKotlinAction : AnAction() {
 
@@ -36,7 +35,9 @@ class ConvertJavaToKotlinAction : AnAction() {
                 e.actionManager,
                 e.modifiers
             )
-            ActionManager.getInstance().getAction(CONVERT_JAVA_TO_KOTLIN_ACTION_ID)?.actionPerformed(overrideEvent)
+            ActionManager.getInstance()
+                .getAction(CONVERT_JAVA_TO_KOTLIN_ACTION_ID)
+                ?.actionPerformed(overrideEvent)
 
         } catch (e: ConversionException) {
             if (e.isError) {

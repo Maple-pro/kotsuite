@@ -25,7 +25,8 @@ class KotSuiteToolWindow(project: Project, toolWindow: ToolWindow) {
         val actionManager = ActionManager.getInstance()
 
         // Create console panel
-        console = TextConsoleBuilderFactory.getInstance().createBuilder(project).console as ConsoleViewImpl
+        console = TextConsoleBuilderFactory
+            .getInstance().createBuilder(project).console as ConsoleViewImpl
         val consolePanel = console!!.component
 
         val notifier = IntelliJNotifier.registerNotifier(project, "KotSuite Plugin", console!!)
@@ -33,8 +34,12 @@ class KotSuiteToolWindow(project: Project, toolWindow: ToolWindow) {
         // Create left-toolbar with stop button
         val buttonGroup = DefaultActionGroup()
         buttonGroup.add(StopKotAction(notifier, "Stop KotSuite"))
-        val viewToolbar = actionManager.createActionToolbar("KotSuite.ConsoleToolbar", buttonGroup, false)
-        viewToolbar.setTargetComponent(toolWindow.component)
+        val viewToolbar = actionManager.createActionToolbar(
+            "KotSuite.ConsoleToolbar",
+            buttonGroup,
+            false
+        )
+        viewToolbar.targetComponent = toolWindow.component
         val toolBarPanel = viewToolbar.component
 
         content.layout = BorderLayout()
