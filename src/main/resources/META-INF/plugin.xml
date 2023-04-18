@@ -1,8 +1,8 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>org.kotsuite.intellij</id>
-    <name>Kotsuite</name>
-    <vendor>maple-pro</vendor>
+    <name>KotSuite</name>
+    <vendor email="yangfeng@whu.edu.cn" url="https://person.maples31.com/">Feng Yang</vendor>
 
     <depends>com.intellij.modules.platform</depends>
 
