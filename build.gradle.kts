@@ -56,7 +56,7 @@ changelog {
     version.set(properties("pluginVersion"))
     path.set(file("CHANGELOG.md").canonicalPath)
     header.set(provider { "[${version.get()}] - ${date()}" })
-    headerParserRegex.set("""(\d+\.\d+)""".toRegex())
+    headerParserRegex.set("""(\d+\.\d+\.\d+)""".toRegex())
     introduction.set(
         """
         My awesome project that provides a lot of useful features, like:
