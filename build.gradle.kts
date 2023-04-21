@@ -43,9 +43,9 @@ dependencies {
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
 intellij {
     pluginName.set(properties("pluginName"))
-//    version.set(properties("platformVersion"))
+    version.set(properties("platformVersion"))
     type.set(properties("platformType"))
-    localPath.set(properties("ASPath")) // Set ide instance to local Android Studio
+//    localPath.set(properties("ASPath")) // Set ide instance to local Android Studio
 
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
     plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))
