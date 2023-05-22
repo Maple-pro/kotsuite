@@ -12,6 +12,11 @@
     <depends>org.jetbrains.kotlin</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <applicationConfigurable groupId="tools" id="kotsuite"
+            displayName="KotSuite"
+            instance="org.kotsuite.intellij.config.KotSuiteGlobalConfigurable" />
+        <applicationService serviceImplementation="org.kotsuite.intellij.config.KotSuiteGlobalState" />
+
         <applicationService serviceImplementation="org.kotsuite.intellij.services.MyApplicationService"/>
         <projectService serviceImplementation="org.kotsuite.intellij.services.MyProjectService"/>
 
