@@ -4,6 +4,7 @@ import org.kotsuite.intellij.util.AsyncGUINotifier
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import org.kotsuite.intellij.dialogs.KotStartDialog
 
 class StopKotAction(
     notifier: AsyncGUINotifier,
@@ -19,7 +20,9 @@ class StopKotAction(
     }
 
     override fun actionPerformed(p0: AnActionEvent) {
-        // TODO: Stop KotSuite executor
+        if (KotSuiteProcess.process != null) {
+            KotSuiteProcess.process!!.destroy()
+        }
 
         notifier?.printOnConsole("\n\n\nKotSuite run has been cancelled.\n")
     }

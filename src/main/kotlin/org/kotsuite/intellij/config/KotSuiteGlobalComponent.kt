@@ -5,7 +5,7 @@ import org.kotsuite.intellij.config.utils.Utils
 import java.awt.BorderLayout
 import javax.swing.JPanel
 
-object KotSuiteGlobalComponent {
+class KotSuiteGlobalComponent {
 
     private val strategy = arrayOf("random", "ga")
 
