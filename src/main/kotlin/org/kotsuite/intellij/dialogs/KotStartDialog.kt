@@ -127,13 +127,13 @@ class KotStartDialog(
         val parameters = getParameters()
         notifier?.printOnConsole(
             "Java Home: ${parameters.javaHome}\n" +
-                    "Project Location: ${parameters.projectPath}" +
-                    "Module Root Path: ${parameters.modulePath}" +
+                    "Project Location: ${parameters.projectPath}\n" +
+                    "Module Root Path: ${parameters.modulePath}\n" +
                     "KotSuite Location: ${parameters.kotSuiteLocation}\n" +
                     "Library Location: ${parameters.libraryLocation}\n" +
                     "Strategy: ${parameters.strategy}\n" +
                     "Include Rules: ${parameters.includeRules}\n" +
-                    "Module Class Path: ${parameters.moduleClassPath}"
+                    "Module Class Path: ${parameters.moduleClassPath}\n"
         )
 
         startKotSuite(parameters)
@@ -148,7 +148,7 @@ class KotStartDialog(
             "-jar",
             parameters.kotSuiteLocation,
             "--project", parameters.projectPath,
-            "--modules", parameters.modulePath,
+            "--module", parameters.modulePath,
             "--includes", parameters.includeRules,
             "--libs", parameters.libraryLocation,
             "--strategy", parameters.strategy,
@@ -190,6 +190,8 @@ class KotStartDialog(
             .substringAfter("java/")
             .substringAfter("kotlin/")
             .replace("/", ".")
+            .removeSuffix(".kt")
+            .removeSuffix(".java")
 
         return rules.ifEmpty { "*" }
     }
@@ -199,8 +201,8 @@ class KotStartDialog(
             .orderEntries().classes().roots.map { it.path }
 
         return classesRoots.first {
-            it.contains("build/intermediates/javac/")
-                    || it.contains("build/tmp/kotlin-classes/debug")
+            it.contains("build/tmp/kotlin-classes/debug")
+//                    || it.contains("build/intermediates/javac/")
         }
     }
 }
