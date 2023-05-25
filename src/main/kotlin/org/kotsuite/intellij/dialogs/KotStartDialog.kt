@@ -20,11 +20,12 @@ data class Parameters(
     val javaHome: String,
     val projectPath: String,
     val modulePath: String,
+    val moduleClassPath: String,
+    val moduleSourcePath: String,
     val kotSuiteLocation: String,
     val libraryLocation: String,
     val strategy: String,
     val includeRules: String,
-    val moduleClassPath: String,
 )
 
 class KotStartDialog(
@@ -39,10 +40,12 @@ class KotStartDialog(
 
     private var moduleRootPath: String
     private var moduleClassPath: String
+    private var moduleSourcePath: String
     private var includeRules: String
 
     private var moduleRootPathField: JBTextField
     private var moduleClassPathField: JBTextField
+    private var moduleSourcePathField: JBTextField
     private var includeRulesField: JBTextField
 
     init {
@@ -50,10 +53,12 @@ class KotStartDialog(
 
         moduleRootPath = getModuleRootPath(module)
         moduleClassPath = getModuleClassPath(module)
+        moduleSourcePath = getModuleSourcePath(module)
         includeRules = getIncludeRules(selectedPath)
 
         moduleRootPathField = Utils.createTextField(moduleRootPath, width = 1200)
         moduleClassPathField = Utils.createTextField(moduleClassPath, width = 1200)
+        moduleSourcePathField = Utils.createTextField(moduleSourcePath, width = 1200)
         includeRulesField = Utils.createTextField(includeRules, width = 1200)
         init()
     }
@@ -69,6 +74,10 @@ class KotStartDialog(
             .addLabeledComponent(
                 Utils.createJBLabel("Module Class Path: ", width = 250),
                 moduleClassPathField,
+            )
+            .addLabeledComponent(
+                Utils.createJBLabel("Module Source Path: ", width = 250),
+                moduleSourcePathField,
             )
             .addLabeledComponent(
                 Utils.createJBLabel("Include Rules: ", width = 250),
@@ -107,11 +116,12 @@ class KotStartDialog(
             javaHome,
             project.basePath!!,
             moduleRootPathField.text,
+            moduleClassPathField.text,
+            moduleSourcePathField.text,
             kotSuiteGlobalState.kotSuiteLocation,
             kotSuiteGlobalState.libraryLocation,
             kotSuiteGlobalState.strategy,
             includeRulesField.text,
-            moduleClassPathField.text,
         )
     }
 
@@ -149,10 +159,11 @@ class KotStartDialog(
             parameters.kotSuiteLocation,
             "--project", parameters.projectPath,
             "--module", parameters.modulePath,
+            "--classpath", parameters.moduleClassPath,
+            "--source", parameters.moduleSourcePath,
             "--includes", parameters.includeRules,
             "--libs", parameters.libraryLocation,
             "--strategy", parameters.strategy,
-            "--classpath", parameters.moduleClassPath,
         )
 
         notifier?.printOnConsole("Run command: ${args.joinToString(" ")}\n")
@@ -203,6 +214,15 @@ class KotStartDialog(
         return classesRoots.first {
             it.contains("build/tmp/kotlin-classes/debug")
 //                    || it.contains("build/intermediates/javac/")
+        }
+    }
+
+    private fun getModuleSourcePath(module: Module): String {
+        val sourceRoots = ModuleRootManager.getInstance(module).sourceRoots.map { it.path }
+
+        return sourceRoots.first {
+            it.contains("src/main/kotlin")
+                    || it.contains("src/main/java")
         }
     }
 }

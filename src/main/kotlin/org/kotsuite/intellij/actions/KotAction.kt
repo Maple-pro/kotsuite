@@ -15,8 +15,8 @@ class KotAction : AnAction() {
         val project = e.getData(PlatformDataKeys.PROJECT)
         val selectedPath = e.getData(PlatformDataKeys.VIRTUAL_FILE)?.path
 
-        val modules = ModuleManager.getInstance(project!!).modules
-        val module = ModuleUtil.findModuleForFile(e.getData(PlatformDataKeys.VIRTUAL_FILE)!!, project)
+//        val modules = ModuleManager.getInstance(project!!).modules
+        val module = ModuleUtil.findModuleForFile(e.getData(PlatformDataKeys.VIRTUAL_FILE)!!, project!!)
 
         val toolWindowManager = ToolWindowManager.getInstance(project)
         val toolWindow = toolWindowManager.getToolWindow("kotsuite")
