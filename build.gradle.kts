@@ -10,9 +10,9 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.8.20"
+    id("org.jetbrains.kotlin.jvm") version "1.8.22"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.13.3"
+    id("org.jetbrains.intellij") version "1.14.1"
     // Gradle Changelog Plugin
     id("org.jetbrains.changelog") version "2.0.0"
     // Gradle Qodana Plugin
@@ -24,16 +24,16 @@ version = properties("pluginVersion")
 
 // Configure project's dependencies
 repositories {
+    mavenCentral()
     maven {
         setUrl("https://maven.aliyun.com/repository/public/")
     }
     maven {
         setUrl("https://www.jetbrains.com/intellij-repository/releases")
     }
-    mavenCentral()
-    maven {
-        setUrl("file://C:/Users/17199/.m2/repository")
-    }
+//    maven {
+//        setUrl("file://C:/Users/17199/.m2/repository")
+//    }
 }
 
 dependencies {
