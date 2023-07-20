@@ -30,8 +30,8 @@ data class Parameters(
 
 class KotStartDialog(
     private val project: Project,
-    private val module: Module,
-    private val selectedPath: String,
+    module: Module,
+    selectedPath: String,
 ) : DialogWrapper(true) {
 
     private val toolWindowManager = ToolWindowManager.getInstance(project)

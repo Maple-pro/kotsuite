@@ -20,7 +20,7 @@ class KotSuiteToolWindowFactory : ToolWindowFactory {
         // Create tool window
         val kotSuiteToolWindow = KotSuiteToolWindow(project, toolWindow)
 
-        val contentFactory = ContentFactory.SERVICE.getInstance()
+        val contentFactory = ContentFactory.getInstance()
         val content = contentFactory.createContent(kotSuiteToolWindow.getContent(), "", false)
         toolWindow.contentManager.addContent(content)
     }
