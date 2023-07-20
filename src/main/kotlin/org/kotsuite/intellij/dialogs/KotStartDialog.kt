@@ -1,9 +1,11 @@
 package org.kotsuite.intellij.dialogs
 
 import com.intellij.openapi.module.Module
+import com.intellij.openapi.module.ModuleManager
 import org.kotsuite.intellij.util.IntelliJNotifier
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ModuleRootManager
+import com.intellij.openapi.roots.OrderEnumerator
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.openapi.ui.ValidationInfo
 import com.intellij.openapi.wm.ToolWindowManager
@@ -26,12 +28,13 @@ data class Parameters(
     val libraryLocation: String,
     val strategy: String,
     val includeRules: String,
+    val dependencyClassPaths: String,
 )
 
 class KotStartDialog(
     private val project: Project,
-    module: Module,
-    selectedPath: String,
+    private val module: Module,
+    private val selectedPath: String,
 ) : DialogWrapper(true) {
 
     private val toolWindowManager = ToolWindowManager.getInstance(project)
@@ -42,6 +45,7 @@ class KotStartDialog(
     private var moduleClassPath: String
     private var moduleSourcePath: String
     private var includeRules: String
+    private var dependencyClassPaths: String
 
     private var moduleRootPathField: JBTextField
     private var moduleClassPathField: JBTextField
@@ -51,10 +55,11 @@ class KotStartDialog(
     init {
         title = "KotSuite Options"
 
-        moduleRootPath = getModuleRootPath(module)
-        moduleClassPath = getModuleClassPath(module)
-        moduleSourcePath = getModuleSourcePath(module)
-        includeRules = getIncludeRules(selectedPath)
+        moduleRootPath = getModuleRootPath()
+        moduleClassPath = getModuleClassPath()
+        moduleSourcePath = getModuleSourcePath()
+        includeRules = getIncludeRules()
+        dependencyClassPaths = getModuleDependencyClassPaths()
 
         moduleRootPathField = Utils.createTextField(moduleRootPath, width = 1200)
         moduleClassPathField = Utils.createTextField(moduleClassPath, width = 1200)
@@ -122,6 +127,7 @@ class KotStartDialog(
             kotSuiteGlobalState.libraryLocation,
             kotSuiteGlobalState.strategy,
             includeRulesField.text,
+            dependencyClassPaths,
         )
     }
 
@@ -144,6 +150,7 @@ class KotStartDialog(
                     "Strategy: ${parameters.strategy}\n" +
                     "Include Rules: ${parameters.includeRules}\n" +
                     "Module Class Path: ${parameters.moduleClassPath}\n"
+//                    "Dependency class paths: ${parameters.dependencyClassPaths}\n"
         )
 
         startKotSuite(parameters)
@@ -164,6 +171,7 @@ class KotStartDialog(
             "--includes", parameters.includeRules,
             "--libs", parameters.libraryLocation,
             "--strategy", parameters.strategy,
+            "--dependency", parameters.dependencyClassPaths,
         )
 
         notifier?.printOnConsole("Run command: ${args.joinToString(" ")}\n")
@@ -176,7 +184,7 @@ class KotStartDialog(
 
     }
 
-    private fun getModuleRootPath(module: Module): String {
+    private fun getModuleRootPath(): String {
         val contentRoots = ModuleRootManager.getInstance(module).contentRoots.map { it.path }
 
         if (contentRoots.isEmpty()) {
@@ -194,7 +202,7 @@ class KotStartDialog(
         return moduleRootPath
     }
 
-    private fun getIncludeRules(selectedPath: String): String {
+    private fun getIncludeRules(): String {
 
         val rules = selectedPath.replace(moduleRootPath, "")
             .substringAfter("main/")
@@ -207,7 +215,7 @@ class KotStartDialog(
         return rules.ifEmpty { "*" }
     }
 
-    private fun getModuleClassPath(module: Module): String {
+    private fun getModuleClassPath(): String {
         val classesRoots = ModuleRootManager.getInstance(module)
             .orderEntries().classes().roots.map { it.path }
 
@@ -217,12 +225,33 @@ class KotStartDialog(
         }
     }
 
-    private fun getModuleSourcePath(module: Module): String {
+    private fun getModuleSourcePath(): String {
         val sourceRoots = ModuleRootManager.getInstance(module).sourceRoots.map { it.path }
 
         return sourceRoots.first {
             it.contains("src/main/kotlin")
                     || it.contains("src/main/java")
         }
+    }
+
+    private fun getModuleDependencyClassPaths(): String {
+        val classPaths = mutableListOf<String>()
+
+        val testModules = ModuleManager.getInstance(project).modules
+            .filter { it.name.contains("Test") || it.name.contains("test") }
+
+        testModules.forEach { module ->
+            val classesRoots = OrderEnumerator.orderEntries(module).recursively()
+                .classesRoots.map { it.path }
+            classPaths.add(classesRoots.joinToString(":"))
+        }
+
+        module.run {
+            val classesRoots = OrderEnumerator.orderEntries(module).recursively()
+                .classesRoots.map { it.path }
+            classPaths.add(classesRoots.joinToString(":"))
+        }
+
+        return classPaths.joinToString(":")
     }
 }
