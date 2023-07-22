@@ -220,8 +220,9 @@ class KotStartDialog(
             .orderEntries().classes().roots.map { it.path }
 
         return classesRoots.first {
-            it.contains("build/tmp/kotlin-classes/debug")
+//            it.contains("build/tmp/kotlin-classes/debug")
 //                    || it.contains("build/intermediates/javac/")
+            it.contains("build/tmp/kotlin-classes")
         }
     }
 
