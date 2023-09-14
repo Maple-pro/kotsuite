@@ -1,6 +1,6 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>org.kotsuite.intellij</id>
+    <id>org.kotsuite</id>
     <name>KotSuite</name>
     <vendor email="yangfeng@whu.edu.cn" url="https://person.maples31.com/">Feng Yang</vendor>
 
@@ -16,9 +16,6 @@
             displayName="KotSuite"
             instance="org.kotsuite.intellij.config.KotSuiteGlobalConfigurable" />
         <applicationService serviceImplementation="org.kotsuite.intellij.config.KotSuiteGlobalState" />
-
-        <applicationService serviceImplementation="org.kotsuite.intellij.services.MyApplicationService"/>
-        <projectService serviceImplementation="org.kotsuite.intellij.services.MyProjectService"/>
 
         <toolWindow factoryClass="org.kotsuite.intellij.toolwindows.KotSuiteToolWindowFactory" id="kotsuite"
                     anchor="bottom" icon="KotIcons.showLogsIcon">

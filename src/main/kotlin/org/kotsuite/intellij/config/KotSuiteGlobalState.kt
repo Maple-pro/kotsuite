@@ -41,7 +41,7 @@ class KotSuiteGlobalState: PersistentStateComponent<KotSuiteGlobalState> {
     }
 
     private fun checkKotSuiteExist(): Boolean {
-        if (kotSuiteLocation == KotSuiteGlobalConfigurable.kotSuiteLocation) {
+        if (kotSuiteLocation == KotSuiteGlobalConfigurable().kotSuiteLocation) {
             return File(kotSuiteLocation).exists()
         }
 
@@ -49,7 +49,7 @@ class KotSuiteGlobalState: PersistentStateComponent<KotSuiteGlobalState> {
     }
 
     private fun checkLibraryExist(): Boolean {
-        if (libraryLocation == KotSuiteGlobalConfigurable.libraryLocation) {
+        if (libraryLocation == KotSuiteGlobalConfigurable().libraryLocation) {
             return File(libraryLocation).exists() && File(libraryLocation).isDirectory
         }
 

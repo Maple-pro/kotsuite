@@ -12,7 +12,7 @@ plugins {
     // Kotlin support
     id("org.jetbrains.kotlin.jvm") version "1.8.22"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.14.1"
+    id("org.jetbrains.intellij") version "1.15.0"
     // Gradle Changelog Plugin
     id("org.jetbrains.changelog") version "2.0.0"
     // Gradle Qodana Plugin
@@ -42,9 +42,9 @@ dependencies {
 
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
 intellij {
+    type.set(properties("platformType"))
     pluginName.set(properties("pluginName"))
     version.set(properties("platformVersion"))
-    type.set(properties("platformType"))
 //    localPath.set(properties("ASPath")) // Set ide instance to local Android Studio
 
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
@@ -163,6 +163,9 @@ tasks {
     }
 
     runIde {
-        jbrVersion.set("jbr_dcevm-11_0_14_1b2043.45")
+        jbrVersion.set("jbr_jcef-17.0.8b1000.8")
+    }
+    buildSearchableOptions {
+        enabled = false
     }
 }

@@ -7,7 +7,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import javax.swing.JComponent
 
-object KotSuiteGlobalConfigurable: Configurable {
+class KotSuiteGlobalConfigurable: Configurable {
 
     private var kotSuiteGlobalComponent: KotSuiteGlobalComponent? = null
 

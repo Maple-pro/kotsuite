@@ -12,19 +12,20 @@ class IntelliJNotifier(
     title: String,
     console: ConsoleViewImpl
 ) : AsyncGUINotifier {
-    companion object {
 
+    companion object {
         private var map: MutableMap<Project, IntelliJNotifier> = LinkedHashMap()
+
         @JvmStatic
         fun getNotifier(project: Project): IntelliJNotifier? {
             return map[project]
         }
+
         fun registerNotifier(
             project: Project,
             title: String,
             console: ConsoleViewImpl
         ): IntelliJNotifier {
-
             val n = IntelliJNotifier(project, title, console)
             map[project] = n
             return n
@@ -32,12 +33,11 @@ class IntelliJNotifier(
     }
 
     private var title: String = ""
-
     private var project: Project? = null
-
     private var console: ConsoleViewImpl? = null
 
     @Volatile private var processHandler: OSProcessHandler? = null
+
     init {
         this.project = project
         this.title = title
@@ -63,7 +63,7 @@ class IntelliJNotifier(
         if (processHandler != null) {
             detachLastProcess()
         }
-        processHandler = OSProcessHandler(process, null)
+        processHandler = OSProcessHandler(process, "echo test")
         console?.attachToProcess(processHandler!!)
         processHandler!!.startNotify()
     }

@@ -174,7 +174,7 @@ class KotStartDialog(
             "--dependency", parameters.dependencyClassPaths,
         )
 
-        notifier?.printOnConsole("Run command: ${args.joinToString(" ")}\n")
+//        notifier?.printOnConsole("Run command: ${args.joinToString(" ")}\n")
 
         KotSuiteProcess.process = Runtime.getRuntime().exec(args)
         if (KotSuiteProcess.process != null) {
@@ -244,15 +244,17 @@ class KotStartDialog(
         testModules.forEach { module ->
             val classesRoots = OrderEnumerator.orderEntries(module).recursively()
                 .classesRoots.map { it.path }
-            classPaths.add(classesRoots.joinToString(":"))
+//            classPaths.add(classesRoots.joinToString(":"))
+            classesRoots.forEach { classPaths.add(it) }
         }
 
         module.run {
             val classesRoots = OrderEnumerator.orderEntries(module).recursively()
                 .classesRoots.map { it.path }
-            classPaths.add(classesRoots.joinToString(":"))
+//            classPaths.add(classesRoots.joinToString(":"))
+            classesRoots.forEach { classPaths.add(it) }
         }
 
-        return classPaths.joinToString(":")
+        return classPaths.distinct().joinToString(":")
     }
 }
