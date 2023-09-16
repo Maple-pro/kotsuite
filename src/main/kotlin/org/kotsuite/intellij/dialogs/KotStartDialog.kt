@@ -11,6 +11,7 @@ import com.intellij.openapi.ui.ValidationInfo
 import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.ui.components.JBTextField
 import com.intellij.util.ui.FormBuilder
+import org.jetbrains.kotlin.konan.file.File
 import org.kotsuite.intellij.actions.KotSuiteProcess
 import org.kotsuite.intellij.config.KotSuiteGlobalState
 import org.kotsuite.intellij.config.utils.Utils
@@ -218,21 +219,14 @@ class KotStartDialog(
     private fun getModuleClassPath(): String {
         val classesRoots = ModuleRootManager.getInstance(module)
             .orderEntries().classes().roots.map { it.path }
+        val results = classesRoots.filter { it.contains(moduleRootPath) }
 
-        return classesRoots.first {
-//            it.contains("build/tmp/kotlin-classes/debug")
-//                    || it.contains("build/intermediates/javac/")
-            it.contains("build/tmp/kotlin-classes")
-        }
+        return results.joinToString(File.pathSeparator)
     }
 
     private fun getModuleSourcePath(): String {
         val sourceRoots = ModuleRootManager.getInstance(module).sourceRoots.map { it.path }
-
-        return sourceRoots.first {
-            it.contains("src/main/kotlin")
-                    || it.contains("src/main/java")
-        }
+        return sourceRoots.joinToString(File.pathSeparator)
     }
 
     private fun getModuleDependencyClassPaths(): String {
@@ -255,6 +249,6 @@ class KotStartDialog(
             classesRoots.forEach { classPaths.add(it) }
         }
 
-        return classPaths.distinct().joinToString(":")
+        return classPaths.distinct().joinToString(File.pathSeparator)
     }
 }
