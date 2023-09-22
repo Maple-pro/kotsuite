@@ -5,9 +5,7 @@ import com.intellij.openapi.ui.ComboBox
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBTextField
-import java.awt.BorderLayout
 import java.awt.Dimension
-import javax.swing.JPanel
 
 object Utils {
 
@@ -18,10 +16,13 @@ object Utils {
     fun createJBLabel(
         labelText: String,
         width: Int = LABEL_WIDTH, height: Int = HEIGHT,
+        setPreferredSize: Boolean = true,
     ): JBLabel {
 
         val label = JBLabel(labelText)
-        label.preferredSize = Dimension(width, height)
+        if (setPreferredSize) {
+            label.preferredSize = Dimension(width, height)
+        }
 
         return label
     }
@@ -29,12 +30,15 @@ object Utils {
     fun createTextFieldWithBrowserButton(
         defaultFieldText: String? = null,
         width: Int = FIELD_WIDTH, height: Int = HEIGHT,
+        setPreferredSize: Boolean = true,
     ): TextFieldWithBrowseButton {
 
         val textFieldWithBrowseButton = TextFieldWithBrowseButton()
 
         with(textFieldWithBrowseButton) {
-            preferredSize = Dimension(width, height)
+            if (setPreferredSize) {
+                preferredSize = Dimension(width, height)
+            }
             addBrowseFolderListener(
                 "Choose File...",
                 "",
@@ -53,10 +57,13 @@ object Utils {
     fun createComboBox(
         values: Array<String>,
         width: Int = FIELD_WIDTH, height: Int = HEIGHT,
+        setPreferredSize: Boolean = true,
     ): ComboBox<String> {
 
         val comboBox = ComboBox(values)
-        comboBox.preferredSize = Dimension(width, height)
+        if (setPreferredSize) {
+            comboBox.preferredSize = Dimension(width, height)
+        }
 
         return comboBox
     }
@@ -64,9 +71,12 @@ object Utils {
     fun createTextField(
         defaultFieldText: String?,
         width: Int = FIELD_WIDTH, height: Int = HEIGHT,
+        setPreferredSize: Boolean = true,
     ): JBTextField {
         val textField = JBTextField()
-        textField.preferredSize = Dimension(width, height)
+        if (setPreferredSize) {
+            textField.preferredSize = Dimension(width, height)
+        }
 
         if (defaultFieldText != null) {
             textField.text = defaultFieldText

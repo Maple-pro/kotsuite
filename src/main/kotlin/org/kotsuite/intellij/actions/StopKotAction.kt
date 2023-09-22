@@ -15,8 +15,8 @@ class StopKotAction(
 
     init {
         this.notifier = notifier
-        templatePresentation.icon = AllIcons.Actions.Close
-        templatePresentation.hoveredIcon = AllIcons.Actions.CloseHovered
+        templatePresentation.icon = AllIcons.Actions.Suspend
+        templatePresentation.hoveredIcon = AllIcons.Actions.Suspend
     }
 
     override fun actionPerformed(p0: AnActionEvent) {

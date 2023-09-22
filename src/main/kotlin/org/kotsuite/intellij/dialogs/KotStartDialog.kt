@@ -1,20 +1,22 @@
 package org.kotsuite.intellij.dialogs
 
+import com.intellij.execution.ProgramRunnerUtil
+import com.intellij.execution.RunManager
+import com.intellij.execution.executors.DefaultRunExecutor
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.module.ModuleManager
-import org.kotsuite.intellij.util.IntelliJNotifier
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ModuleRootManager
 import com.intellij.openapi.roots.OrderEnumerator
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.openapi.ui.ValidationInfo
-import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.ui.components.JBTextField
 import com.intellij.util.ui.FormBuilder
 import org.jetbrains.kotlin.konan.file.File
-import org.kotsuite.intellij.actions.KotSuiteProcess
 import org.kotsuite.intellij.config.KotSuiteGlobalState
 import org.kotsuite.intellij.config.utils.Utils
+import org.kotsuite.intellij.runConfiguration.KotsuiteRunConfiguration
+import org.kotsuite.intellij.runConfiguration.KotsuiteRunConfigurationType
 import java.awt.BorderLayout
 import javax.swing.*
 import kotlin.reflect.full.declaredMemberProperties
@@ -37,10 +39,6 @@ class KotStartDialog(
     private val module: Module,
     private val selectedPath: String,
 ) : DialogWrapper(true) {
-
-    private val toolWindowManager = ToolWindowManager.getInstance(project)
-    private val toolWindow = toolWindowManager.getToolWindow("kotsuite")
-    private val notifier = IntelliJNotifier.getNotifier(project)
 
     private var moduleRootPath: String
     private var moduleClassPath: String
@@ -134,55 +132,10 @@ class KotStartDialog(
 
     override fun doOKAction() {
         close(CANCEL_EXIT_CODE)
-
-        toolWindow?.show()
-
-        notifier?.clearConsole()
-
-        notifier?.printOnConsole("Start KotSuite ...\n")
-
         val parameters = getParameters()
-        notifier?.printOnConsole(
-            "Java Home: ${parameters.javaHome}\n" +
-                    "Project Location: ${parameters.projectPath}\n" +
-                    "Module Root Path: ${parameters.modulePath}\n" +
-                    "KotSuite Location: ${parameters.kotSuiteLocation}\n" +
-                    "Library Location: ${parameters.libraryLocation}\n" +
-                    "Strategy: ${parameters.strategy}\n" +
-                    "Include Rules: ${parameters.includeRules}\n" +
-                    "Module Class Path: ${parameters.moduleClassPath}\n"
-//                    "Dependency class paths: ${parameters.dependencyClassPaths}\n"
-        )
 
-        startKotSuite(parameters)
-    }
-
-    private fun startKotSuite(parameters: Parameters) {
-
-        val javaPath = if (parameters.javaHome == "java") "java" else "${parameters.javaHome}/bin/java"
-
-        val args = arrayOf(
-            javaPath,
-            "-jar",
-            parameters.kotSuiteLocation,
-            "--project", parameters.projectPath,
-            "--module", parameters.modulePath,
-            "--classpath", parameters.moduleClassPath,
-            "--source", parameters.moduleSourcePath,
-            "--includes", parameters.includeRules,
-            "--libs", parameters.libraryLocation,
-            "--strategy", parameters.strategy,
-            "--dependency", parameters.dependencyClassPaths,
-        )
-
-//        notifier?.printOnConsole("Run command: ${args.joinToString(" ")}\n")
-
-        KotSuiteProcess.process = Runtime.getRuntime().exec(args)
-        if (KotSuiteProcess.process != null) {
-            notifier?.attachProcess(KotSuiteProcess.process!!)
-            KotSuiteProcess.process!!.waitFor()
-        }
-
+        val configurationName = createKotsuiteRunConfiguration(project, parameters)
+        runKotsuiteRunConfiguration(project, configurationName)
     }
 
     private fun getModuleRootPath(): String {
@@ -238,17 +191,44 @@ class KotStartDialog(
         testModules.forEach { module ->
             val classesRoots = OrderEnumerator.orderEntries(module).recursively()
                 .classesRoots.map { it.path }
-//            classPaths.add(classesRoots.joinToString(":"))
             classesRoots.forEach { classPaths.add(it) }
         }
 
         module.run {
             val classesRoots = OrderEnumerator.orderEntries(module).recursively()
                 .classesRoots.map { it.path }
-//            classPaths.add(classesRoots.joinToString(":"))
             classesRoots.forEach { classPaths.add(it) }
         }
 
         return classPaths.distinct().joinToString(File.pathSeparator)
+    }
+
+    private fun createKotsuiteRunConfiguration(project: Project, parameters: Parameters): String {
+        val configurationName = "KotSuite-${parameters.includeRules}"
+
+        val runnerAndConfigurationSettings = RunManager.getInstance(project)
+            .createConfiguration(configurationName, KotsuiteRunConfigurationType::class.java)
+
+        with(runnerAndConfigurationSettings.configuration as KotsuiteRunConfiguration) {
+            this.setJavaPath(if (parameters.javaHome == "java") "java" else "${parameters.javaHome}/bin/java")
+            this.setKotsuiteLocation(parameters.kotSuiteLocation)
+            this.setProjectPath(parameters.projectPath)
+            this.setModulePath(parameters.modulePath)
+            this.setModuleClassPath(parameters.moduleClassPath)
+            this.setModuleSourcePath(parameters.moduleSourcePath)
+            this.setIncludeRules(parameters.includeRules)
+            this.setLibraryLocation(parameters.libraryLocation)
+            this.setStrategy(parameters.strategy)
+            this.setDependency(parameters.dependencyClassPaths)
+        }
+        RunManager.getInstance(project).addConfiguration(runnerAndConfigurationSettings)
+
+        return runnerAndConfigurationSettings.name
+    }
+
+    private fun runKotsuiteRunConfiguration(project: Project, configurationName: String) {
+        val runnerAndConfigurationSettings = RunManager.getInstance(project).findConfigurationByTypeAndName(KotsuiteRunConfigurationType.ID, configurationName)
+        val executor = DefaultRunExecutor.getRunExecutorInstance()
+        ProgramRunnerUtil.executeConfiguration(runnerAndConfigurationSettings!!, executor!!)
     }
 }

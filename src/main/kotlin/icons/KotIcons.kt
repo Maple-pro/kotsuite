@@ -8,4 +8,7 @@ object KotIcons {
 
     @JvmField
     val showLogsIcon = IconLoader.getIcon("/icons/showLogs_dark.svg", javaClass)
+
+    @JvmField
+    val pluginIcon = IconLoader.getIcon("/icons/pluginIcon_dark.svg", javaClass)
 }

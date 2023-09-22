@@ -14,12 +14,14 @@
     <extensions defaultExtensionNs="com.intellij">
         <applicationConfigurable groupId="tools" id="kotsuite"
             displayName="KotSuite"
-            instance="org.kotsuite.intellij.config.KotSuiteGlobalConfigurable" />
-        <applicationService serviceImplementation="org.kotsuite.intellij.config.KotSuiteGlobalState" />
+            instance="org.kotsuite.intellij.config.KotSuiteGlobalConfigurable"/>
+        <applicationService serviceImplementation="org.kotsuite.intellij.config.KotSuiteGlobalState"/>
 
-        <toolWindow factoryClass="org.kotsuite.intellij.toolwindows.KotSuiteToolWindowFactory" id="kotsuite"
-                    anchor="bottom" icon="KotIcons.showLogsIcon">
-        </toolWindow>
+<!--        <toolWindow factoryClass="org.kotsuite.intellij.toolwindows.KotSuiteToolWindowFactory" id="kotsuite"-->
+<!--                    anchor="bottom" icon="AllIcons.Scope.ChangedFiles">-->
+<!--        </toolWindow>-->
+
+        <configurationType implementation="org.kotsuite.intellij.runConfiguration.KotsuiteRunConfigurationType"/>
     </extensions>
 
 <!--    <applicationListeners>-->
