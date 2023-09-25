@@ -60,6 +60,8 @@ class KotStartDialog(
         includeRules = getIncludeRules()
         dependencyClassPaths = getModuleDependencyClassPaths()
 
+        exportModuleDependencyClassPath(dependencyClassPaths, moduleRootPath)
+
         moduleRootPathField = Utils.createTextField(moduleRootPath, width = 1200)
         moduleClassPathField = Utils.createTextField(moduleClassPath, width = 1200)
         moduleSourcePathField = Utils.createTextField(moduleSourcePath, width = 1200)
@@ -201,6 +203,20 @@ class KotStartDialog(
         }
 
         return classPaths.distinct().joinToString(File.pathSeparator)
+    }
+
+    private fun exportModuleDependencyClassPath(moduleDependencyClassPath: String, moduleRootPath: String) {
+        val parts = moduleDependencyClassPath.split(File.pathSeparator)
+        val transformedParts = parts.map { "\"${it}\"," }
+        val transformedString = transformedParts.joinToString("\n")
+        try {
+            val file = File(moduleRootPath, "kotsuite-dependency-classpath.txt")
+            file.writeText(transformedString)
+        } catch (e: Exception) {
+            println("An error occurred while exporting module dependency class path: ${e.message}")
+            return
+        }
+
     }
 
     private fun createKotsuiteRunConfiguration(project: Project, parameters: Parameters): String {

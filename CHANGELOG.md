@@ -21,6 +21,16 @@ My awesome project that provides a lot of useful features, like:
 
 ### Security
 
+## [1.1.6] - 2023-09-25
+
+### Added
+- Update plugin changelog
+
+## 1.1.5 - 2023-09-25
+
+### Added
+- Output module dependency to `kotsuite-dependency-classpath.txt` in the module root path
+
 ## 1.0.1 - 2023-04-19
 
 ### Added
