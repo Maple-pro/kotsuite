@@ -21,7 +21,12 @@ My awesome project that provides a lot of useful features, like:
 
 ### Security
 
-## [1.1.6] - 2023-09-25
+## 1.1.7 - 2023-11-14
+
+### Added
+- Use `@argument` option to run KotSuite with arguments
+
+## 1.1.6 - 2023-09-25
 
 ### Added
 - Update plugin changelog

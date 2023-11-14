@@ -8,6 +8,7 @@ import com.intellij.execution.process.ProcessTerminatedListener
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
+import java.io.File
 
 class KotsuiteRunConfiguration(project: Project, factory: KotsuiteRunConfigurationFactory, name: String) :
     RunConfigurationBase<KotsuiteRunConfigurationOptions>(project, factory, name) {
@@ -82,8 +83,9 @@ class KotsuiteRunConfiguration(project: Project, factory: KotsuiteRunConfigurati
         // but I don't find the documentation to use it
         return object : CommandLineState(environment) {
             override fun startProcess(): ProcessHandler {
-                val generalCommandLine = GeneralCommandLine(
-                    options.getJavaPath(),
+                // Save Java argument to a file, and use `@argument` to pass the argument to the Java process
+                val argumentFile = File(options.getModulePath(), "kotsuite-arguments.txt")
+                val args = listOf(
                     "-jar", options.getKotsuiteLocation(),
                     "--project", options.getProjectPath(),
                     "--module", options.getModulePath(),
@@ -93,6 +95,12 @@ class KotsuiteRunConfiguration(project: Project, factory: KotsuiteRunConfigurati
                     "--libs", options.getLibraryLocation(),
                     "--strategy", options.getStrategy(),
                     "--dependency", options.getDependency(),
+                )
+                argumentFile.writeText(args.joinToString(" ").replace("""\""", """\\"""))
+
+                val generalCommandLine = GeneralCommandLine(
+                    options.getJavaPath(),
+                    "@${argumentFile.absolutePath}",
                 )
                 val processHandler = ProcessHandlerFactory.getInstance().createColoredProcessHandler(generalCommandLine)
                 ProcessTerminatedListener.attach(processHandler)
