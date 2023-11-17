@@ -61,6 +61,7 @@ class KotStartDialog(
         dependencyClassPaths = getModuleDependencyClassPaths()
 
         exportModuleDependencyClassPath(dependencyClassPaths, moduleRootPath)
+        exportModuleInformation()
 
         moduleRootPathField = Utils.createTextField(moduleRootPath, width = 1200)
         moduleClassPathField = Utils.createTextField(moduleClassPath, width = 1200)
@@ -164,6 +165,7 @@ class KotStartDialog(
             .substringAfter("main/")
             .substringAfter("java/")
             .substringAfter("kotlin/")
+            .substringAfter("src/")
             .replace("/", ".")
             .removeSuffix(".kt")
             .removeSuffix(".java")
@@ -216,7 +218,18 @@ class KotStartDialog(
             println("An error occurred while exporting module dependency class path: ${e.message}")
             return
         }
+    }
 
+    private fun exportModuleInformation() {
+        val moduleClassPath = ModuleRootManager.getInstance(module).orderEntries().classesRoots.map { it.path }
+        try {
+            val file = File(moduleRootPath, "kotsuite-module-information.txt")
+            file.writeText("Module Class Path: ${moduleClassPath.joinToString(", ")}\n")
+            file.appendText("Selected Path: $selectedPath")
+        } catch (e: Exception) {
+            println("An error occurred while exporting module information: ${e.message}")
+            return
+        }
     }
 
     private fun createKotsuiteRunConfiguration(project: Project, parameters: Parameters): String {
