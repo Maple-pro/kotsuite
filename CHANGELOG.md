@@ -21,6 +21,11 @@ My awesome project that provides a lot of useful features, like:
 
 ### Security
 
+## [1.2.0] - 2023-11-24
+
+### Added
+- 已能正常使用，用于结项
+
 ## 1.1.7 - 2023-11-14
 
 ### Added
