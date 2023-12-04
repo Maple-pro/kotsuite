@@ -21,7 +21,12 @@ My awesome project that provides a lot of useful features, like:
 
 ### Security
 
-## [1.2.0] - 2023-11-24
+## [1.2.1] - 2023-12-04
+
+### Fixed
+- 错误的 File 依赖导致无法正常运行
+
+## 1.2.0 - 2023-11-24
 
 ### Added
 - 已能正常使用，用于结项

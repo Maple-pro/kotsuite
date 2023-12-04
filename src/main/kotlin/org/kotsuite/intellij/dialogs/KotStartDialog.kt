@@ -4,7 +4,6 @@ import com.intellij.execution.ProgramRunnerUtil
 import com.intellij.execution.RunManager
 import com.intellij.execution.executors.DefaultRunExecutor
 import com.intellij.openapi.module.Module
-import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ModuleRootManager
 import com.intellij.openapi.roots.OrderEnumerator
@@ -12,14 +11,15 @@ import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.openapi.ui.ValidationInfo
 import com.intellij.ui.components.JBTextField
 import com.intellij.util.ui.FormBuilder
-import org.jetbrains.kotlin.konan.file.File
 import org.kotsuite.intellij.config.KotSuiteGlobalState
 import org.kotsuite.intellij.config.utils.Utils
 import org.kotsuite.intellij.runConfiguration.KotsuiteRunConfiguration
 import org.kotsuite.intellij.runConfiguration.KotsuiteRunConfigurationType
 import java.awt.BorderLayout
+import java.io.File
 import javax.swing.*
 import kotlin.reflect.full.declaredMemberProperties
+import kotlin.reflect.jvm.isAccessible
 
 data class Parameters(
     val javaHome: String,
@@ -108,9 +108,14 @@ class KotStartDialog(
     }
 
     private fun Parameters.allPropertiesNotEmpty(): Boolean {
-        return this::class.declaredMemberProperties.all { prop ->
-            val value = prop.getter.call(this) as String
-            value.isNotEmpty()
+        return this::class.declaredMemberProperties.all { field ->
+            field.isAccessible = true
+            val value = field.getter.call(this)
+            if (value !is String) {
+                return true
+            } else {
+                return value.isNotEmpty()
+            }
         }
     }
 
@@ -189,14 +194,14 @@ class KotStartDialog(
     private fun getModuleDependencyClassPaths(): String {
         val classPaths = mutableListOf<String>()
 
-        val testModules = ModuleManager.getInstance(project).modules
-            .filter { it.name.contains("Test") || it.name.contains("test") }
-
-        testModules.forEach { module ->
-            val classesRoots = OrderEnumerator.orderEntries(module).recursively()
-                .classesRoots.map { it.path }
-            classesRoots.forEach { classPaths.add(it) }
-        }
+//        val testModules = ModuleManager.getInstance(project).modules
+//            .filter { it.name.contains("Test") || it.name.contains("test") }
+//
+//        testModules.forEach { module ->
+//            val classesRoots = OrderEnumerator.orderEntries(module).recursively()
+//                .classesRoots.map { it.path }
+//            classesRoots.forEach { classPaths.add(it) }
+//        }
 
         module.run {
             val classesRoots = OrderEnumerator.orderEntries(module).recursively()
