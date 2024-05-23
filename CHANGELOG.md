@@ -14,17 +14,23 @@ My awesome project that provides a lot of useful features, like:
 
 ### Changed
 
-- GitHub CI: Skip verification step
-
 ### Deprecated
 
 ### Removed
 
 ### Fixed
 
-- GitHub release workflow 
-
 ### Security
+
+## [[1.2.6]] - 2024-05-23
+
+### Changed
+
+- GitHub CI: Skip verification step
+
+### Fixed
+
+- GitHub release workflow
 
 ## [[1.2.5]] - 2024-05-23
 
@@ -87,7 +93,8 @@ My awesome project that provides a lot of useful features, like:
 - Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
 - Integrate KotSuite command line tool
 
-[[Unreleased]]: https://github.com/Maple-pro/kotsuite/compare/v1.2.5...HEAD
+[[Unreleased]]: https://github.com/Maple-pro/kotsuite/compare/v1.2.6...HEAD
+[1.2.6]: https://github.com/Maple-pro/kotsuite/compare/v1.2.5...v1.2.6
 [1.2.5]: https://github.com/Maple-pro/kotsuite/compare/v1.2.4...v1.2.5
 [1.2.4]: https://github.com/Maple-pro/kotsuite/compare/v1.2.2...v1.2.4
 [1.2.2]: https://github.com/Maple-pro/kotsuite/compare/v1.2.1...v1.2.2
