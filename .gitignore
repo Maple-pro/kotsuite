@@ -4,3 +4,6 @@
 build
 out
 *.hprof
+chain.crt
+private.pem
+private_encrypted.pem
