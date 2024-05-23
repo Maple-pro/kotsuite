@@ -10,6 +10,7 @@ My awesome project that provides a lot of useful features, like:
 ## [Unreleased]
 
 ### Added
+- Fix GitHub workflows
 
 ### Changed
 
@@ -21,7 +22,12 @@ My awesome project that provides a lot of useful features, like:
 
 ### Security
 
-## [1.2.1] - 2023-12-04
+## [1.2.2] - 2024-05-23
+
+### Changed
+- Unset until-build number.
+
+## 1.2.1 - 2023-12-04
 
 ### Fixed
 - 错误的 File 依赖导致无法正常运行

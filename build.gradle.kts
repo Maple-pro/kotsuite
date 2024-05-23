@@ -65,11 +65,7 @@ changelog {
     groups.set(listOf("Added", "Changed", "Deprecated", "Removed", "Fixed", "Security"))
     lineSeparator.set("\n")
     combinePreReleases.set(true)
-    sectionUrlBuilder.set(
-        ChangelogSectionUrlBuilder { repositoryUrl, currentVersion, previousVersion, isUnreleased ->
-            "foo"
-        }
-    )
+    repositoryUrl.set("https://github.com/Maple-pro/kotsuite")
 }
 
 // Configure Gradle Qodana Plugin - read more: https://github.com/JetBrains/gradle-qodana-plugin
@@ -99,7 +95,7 @@ tasks {
     patchPluginXml {
         version.set(properties("pluginVersion"))
         sinceBuild.set(properties("pluginSinceBuild"))
-        untilBuild.set(properties("pluginUntilBuild"))
+//        untilBuild.set(properties("pluginUntilBuild"))
 
         // Extract the <!-- Plugin description --> section from README.md and provide for the plugin's manifest
         pluginDescription.set(
@@ -160,6 +156,7 @@ tasks {
     runIde {
         jbrVersion.set("jbr_jcef-17.0.8b1000.8")
     }
+
     buildSearchableOptions {
         enabled = false
     }
